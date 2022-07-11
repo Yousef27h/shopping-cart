@@ -1,12 +1,13 @@
-let items = [{id: 1, name: "AppleJuice", price: "2", stock: 2}];
-let count = 1;
+let items = [];
+let count = 0;
 
 module.exports = class Item{
 
-    constructor(name, price, stock){
+    constructor(name, price, stock, imageLink){
         this.name = name;
         this.price = price;
         this.stock = stock;
+        this.imageLink = imageLink;
     }
 
     save(){

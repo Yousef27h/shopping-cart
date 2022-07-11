@@ -16,4 +16,8 @@ router.get('/:userId/items', userController.getItems);
 
 router.delete('/:userId/items', userController.deleteItem);
 
+router.delete('/:userId/lineItems', userController.deleteItems);
+
+router.patch('/:userId/items', userController.updateQty);
+
 module.exports = router;

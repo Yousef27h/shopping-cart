@@ -3,11 +3,12 @@ const InventoryItem = require('./Item');
 
 let users = [];
 let count = 0;
-
+// module.exports.usersList = users;
 module.exports = class User{
 
-    constructor(name){
-        this.name = name;
+    constructor(username, password){
+        this.username = username;
+        this.password = password;
         this.cart = new ShoppingCart();
     }
 
@@ -34,8 +35,16 @@ module.exports = class User{
         return this.cart.addItem(itemId, qty);
     }
 
-    removeItem(itemId, qty){
-        return this.cart.removeItem(itemId, qty);
+    static checkUser(username, password){
+        return users.find(user => user.username == username && user.password == password);
+    }
+
+    removeItem(itemId){
+        return this.cart.removeItem(itemId);
+    }
+
+    updateQty(itemId, newQty){
+        return this.cart.updateQty(itemId, newQty)
     }
 
 }

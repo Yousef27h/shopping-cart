@@ -14,6 +14,7 @@ module.exports = class LineItem{
     findInventoryItem(itemId){
         let stockItem = Item.findById(itemId);
         if(stockItem == undefined){
+            alert('Out of stock!')
             throw new Error('Out of stock!');
         }
 
@@ -24,15 +25,13 @@ module.exports = class LineItem{
         
         let stockItem = this.findInventoryItem(this.itemId);
 
-        let stockLeft = stockItem.stock - qty ; 
-
-        if(stockLeft < 0){
+        if(stockItem.stock < qty){
+            alert(`There are only ${stockItem.stock} stock items left`);
             throw new Error(`There are only ${stockItem.stock} stock items left`);
         }
 
-        stockItem.stock = stockLeft;
-
-        this.quantity = this.quantity + qty;
+        this.quantity = this.quantity + Number(qty);
+        stockItem.stock = stockItem.stock - Number(qty);
 
         this.updatePrice();
 
@@ -42,14 +41,35 @@ module.exports = class LineItem{
     decrementQuantity(qty){
         let stockItem = Item.findById(this.itemId);
 
-        stockItem.stock = stockItem.stock + qty ;
+        stockItem.stock = stockItem.stock + Number(qty) ;
 
-        this.quantity = this.quantity - qty;
-
+        this.quantity = this.quantity - Number(qty);
+        console.log("inside lineItem : ",this.quantity)
         this.updatePrice();
-
-        return this.quantity;
+        
+        return this;
     }
+
+    // updateQuantity(newQty){
+    //     let stockItem = Item.findById(this.itemId);
+
+    //     if(newQty > this.quantity){
+    //         let stockQtyUpdated = stockItem.stock - (newQty - this.quantity);
+
+    //         if(stockQtyUpdated < 0){
+    //             throw new Error('There is no enough resources in inventory!')
+    //         }else{
+    //             stockItem.stock = stockQtyUpdated;
+    //             this.quantity = newQty;
+    //         }
+
+    //     }else{
+    //         let stockQtyUpdated = stockItem.stock + (this.quantity - newQty);
+    //         stockItem.stock = stockQtyUpdated;
+    //         this.quantity = newQty;
+    //     }
+        
+    // }
 
     updatePrice(){
         let inventoryItem = this.findInventoryItem(this.itemId);
