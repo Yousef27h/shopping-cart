@@ -7,7 +7,7 @@ const User = require('./models/User');
 const Item = require('./models/Item');
 const cors = require('cors');
 
-let usersList = [];
+
 
 const app = express();
 
@@ -16,8 +16,8 @@ app.use(express.json());
 
 let user = new User("yousef","111").save();
 let user2 = new User("ahmad","222").save();
-usersList.push(user.username);
-usersList.push(user2.username);
+let usersList = User.fetchAll();
+
 
 let item1 = new Item("Apple", 2, 14, "./assets/apple.jpeg").save();
 let item2 = new Item("Orange", 3, 25, "./assets/orange.jpeg").save();
@@ -30,7 +30,8 @@ app.use((req, res, next) => {
     if(token === 'null'){
         res.json({error: 'No Access Token'});
     }
-    let user = usersList.map(user=> user.username).filter(username => username === token.split('-')[1]);
+    let user = usersList.map(user=> user.username).filter(username => username == token.split('-')[1]);
+
     if(user.length != 0){
         next();
     } else {
